@@ -1,1 +1,20 @@
-FROM mcr.microsoft.com/windows/servercore:ltsc2022
+# Use a Windows Server Core as the base image
+FROM mcr.microsoft.com/windows/servercore:ltsc2019
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the current directory contents into the container at /app
+COPY . .
+
+# Install any needed dependencies or tools
+RUN ["powershell", "-Command", "Add-WindowsFeature Web-Server"]
+
+# Expose port 80 for web traffic
+EXPOSE 80
+
+# Define environment variables
+ENV NAME World
+
+# Command to start the web server
+CMD ["powershell", "-Command", "Invoke-WebRequest -Uri http://localhost"]
